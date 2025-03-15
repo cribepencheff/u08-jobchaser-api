@@ -1,4 +1,4 @@
-# JobChaser-API
+# u08 – JobChaser Backend
 
 ## 📌 Projektbeskrivning  
 Detta är backend för en jobbsökar-tjänst. API:et hanterar användarregistrering, inloggning och sparade jobb. Jobb hämtas från ett externt API och lagras inte lokalt i systemet.  
@@ -16,4 +16,4 @@ Modellen består av:
 ![JobChaser ER-Diagram](https://github.com/sandra-chas-academy/u08-skapa-backend-f-r-jobchaser-cribepencheff/raw/main/jobchaser-ER-diagram.png)  
 
 **Varför inte many-to-many?**  
-Relationen mellan **User** och **SavedJobs** är **en-till-många** (one-to-many) eftersom varje användare kan ha flera sparade jobb, men varje rad i **SavedJobs** är kopplad till en specifik användare, vilket innebär att ett jobb inte kan tillhöra flera användare samtidigt.
+Relationen mellan **user** och **saved_jobs** är **en-till-många** (one-to-many) eftersom varje användare kan ha flera sparade jobb, men varje rad i **saved_jobs** är kopplad till en specifik användare, vilket innebär att ett sparat jobb inte kan tillhöra flera användare samtidigt.
