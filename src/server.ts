@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 
 dotenv.config();
-// Import routes here
+import userRoutes from "./routes/userRoutes"
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -12,11 +12,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes here
-
-app.get("/", (req, res) => {
-  res.send("Node.js and Express.js with TypeScript");
-});
+// Routes
+app.use("/api/users", userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
