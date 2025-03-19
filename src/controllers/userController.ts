@@ -73,7 +73,7 @@ export const updatePassword = async (req: ProtectedRequest, res: Response) => {
       data: { password: hashedPassword },
     });
 
-    res.status(200).json({ message: "Password updated successfully." });
+    res.status(200).json({ message: "Password updated successfully.", user: updatedUser.email });
     return;
 
   } catch (err) {
@@ -89,14 +89,13 @@ export const deleteUser = async (req: ProtectedRequest, res: Response) => {
   try {
     // Get user from JWT
     const userId = req.user?.id;
-
     await prisma.user.delete({ where: { id: userId }});
 
-    res.status(200).json({ message: "User deleted successfully." });
+    res.status(204).json({ message: "User deleted successfully." });
     return;
 
   } catch (error) {
-    res.status(500).json({ message: "Error deleting user.", error });
+    res.status(500).json({ message: "Error deleting user." });
     return;
   }
 };
