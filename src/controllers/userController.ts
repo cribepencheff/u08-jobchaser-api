@@ -30,10 +30,8 @@ export const getUserProfile = async (req: ProtectedRequest, res: Response) => {
     return;
 
   } catch (err) {
-    res.status(500).json({
-      message: "Error fetching user profile.",
-      error: (err as Error).message
-    });
+    console.error(err)
+    res.status(500).json({ message: "Error fetching user profile." });
     return;
   }
 };
@@ -77,10 +75,8 @@ export const updatePassword = async (req: ProtectedRequest, res: Response) => {
     return;
 
   } catch (err) {
-    res.status(500).json({
-      message: "Error updating password.",
-      error: (err as Error).message
-    });
+    console.error(err)
+    res.status(500).json({ message: "Error updating password." });
     return;
   }
 };
@@ -94,7 +90,8 @@ export const deleteUser = async (req: ProtectedRequest, res: Response) => {
     res.status(204).json({ message: "User deleted successfully." });
     return;
 
-  } catch (error) {
+  } catch (err) {
+    console.error(err)
     res.status(500).json({ message: "Error deleting user." });
     return;
   }

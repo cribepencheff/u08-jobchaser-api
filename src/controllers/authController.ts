@@ -24,6 +24,7 @@ export const signUp = async (req: Request, res: Response) => {
     return;
 
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Error creating user." });
     return;
   }
@@ -58,6 +59,7 @@ export const logIn = async (req: Request, res: Response) => {
     return;
 
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Error logging in." });
     return;
   }
@@ -70,7 +72,8 @@ export const logOut = (req: Request, res: Response) => {
     res.status(200).json({ message: "Logged out successfully." });
     return;
 
-  } catch(err) {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Error logging out." });
     return;
   }

@@ -19,7 +19,10 @@ export const getSavedJobs = async (req: ProtectedRequest, res: Response) => {
     return;
 
   } catch (err) {
-    res.status(500).json({ error: "Could not retrieve saved jobs." });
+    res.status(500).json({
+      message: "Could not retrieve saved jobs.",
+      error: (err as Error).message
+    });
     return;
   }
 }
@@ -51,7 +54,10 @@ export const saveJob = async (req: ProtectedRequest, res: Response) => {
     return;
 
   } catch (err) {
-    res.status(500).json({ error: "Could not save job." });
+    res.status(500).json({
+      message: "Could not save job.",
+      error: (err as Error).message
+    });
     return;
   }
 }
@@ -78,7 +84,10 @@ export const removeSavedJob = async (req: ProtectedRequest, res: Response) => {
     return;
 
   } catch (err) {
-    res.status(500).json({ error: "Error removing saved job." });
+    res.status(500).json({
+      message: "Error removing saved job.",
+      error: (err as Error).message
+    });
     return;
   }
 }

@@ -19,6 +19,7 @@ export const authMiddleware = (req: ProtectedRequest, res: Response, next: NextF
 
   if (!JWT_SECRET) {
     res.status(500).json({ message: "JWT_SECRET is not defined."});
+    return;
   }
 
   // Verify token with verify()
@@ -30,6 +31,7 @@ export const authMiddleware = (req: ProtectedRequest, res: Response, next: NextF
 
   } catch (err) {
     console.log(err);
-    res.status(401).json({ message: "Unauthorized request. Invalid token." })
+    res.status(401).json({ message: "Unauthorized request. Invalid token." });
+    return;
   }
 }
