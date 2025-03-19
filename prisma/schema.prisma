@@ -23,7 +23,7 @@ model User {
 }
 
 model SavedJob {
-  user      User      @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String    @db.Char(36)
   jobId     String    @db.VarChar(100)
   createdAt DateTime  @default(now())

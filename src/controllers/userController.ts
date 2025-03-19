@@ -43,7 +43,7 @@ export const updatePassword = async (req: ProtectedRequest, res: Response) => {
     const { oldPassword, newPassword } = req.body;
 
     if (!oldPassword || !newPassword) {
-      res.status(400).json({ message: "Both oldPassword and newPassword are required." });
+      res.status(400).json({ message: "Both old password and new password are required." });
       return;
     }
 
@@ -52,7 +52,7 @@ export const updatePassword = async (req: ProtectedRequest, res: Response) => {
     });
 
     if (!user) {
-      res.status(404).json({ message: "User not found." });
+      res.status(404).json({ message: "User not found. Please ensure you are logged in." });
       return;
     }
 
@@ -76,7 +76,7 @@ export const updatePassword = async (req: ProtectedRequest, res: Response) => {
 
   } catch (err) {
     console.error(err)
-    res.status(500).json({ message: "Error updating password." });
+    res.status(500).json({ message: "Error updating password. Please try again later." });
     return;
   }
 };
@@ -87,11 +87,11 @@ export const deleteUser = async (req: ProtectedRequest, res: Response) => {
     const userId = req.user?.id;
     await prisma.user.delete({ where: { id: userId }});
 
-    res.status(204).json({ message: "User deleted successfully." });
+    res.status(200).json({ message: "User deleted successfully." });
     return;
 
   } catch (err) {
-    console.error(err)
+    console.error(err);
     res.status(500).json({ message: "Error deleting user." });
     return;
   }

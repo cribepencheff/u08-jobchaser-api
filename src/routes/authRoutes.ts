@@ -1,5 +1,6 @@
 import express from "express";
 import { authMiddleware } from "../middleware/auth";
+import { validateUser } from "../middleware/validator";
 import {
   signUp,
   logIn,
@@ -8,8 +9,8 @@ import {
 
 const router = express.Router();
 
-router.post("/signup", signUp);
-router.post("/login", logIn);
+router.post("/signup", validateUser, signUp);
+router.post("/login", validateUser, logIn);
 router.post("/logout", authMiddleware, logOut);
 
 export default router;

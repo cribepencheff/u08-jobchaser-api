@@ -7,7 +7,7 @@ export const getSavedJobs = async (req: ProtectedRequest, res: Response) => {
     const userId = req.user?.id;
 
     if (!userId) {
-      res.status(400).json({ message: "userId is required."});
+      res.status(400).json({ message: "User ID is required."});
       return;
     }
 
@@ -33,7 +33,16 @@ export const saveJob = async (req: ProtectedRequest, res: Response) => {
     const userId = req.user?.id;
 
     if (!jobId) {
-      res.status(400).json({ message: "JobId is required."});
+      res.status(400).json({ message: "Job ID is required."});
+      return;
+    }
+
+    const savedJobExists = await prisma.savedJob.findUnique({
+      where: { userId_jobId: { userId, jobId }}
+    });
+
+    if (savedJobExists) {
+      res.status(409).json({ message: "This job has already been saved." });
       return;
     }
 
@@ -55,7 +64,7 @@ export const saveJob = async (req: ProtectedRequest, res: Response) => {
 
   } catch (err) {
     res.status(500).json({
-      message: "Could not save job.",
+      message: "Unable to save the job. Please try again later.",
       error: (err as Error).message
     });
     return;
@@ -72,7 +81,7 @@ export const removeSavedJob = async (req: ProtectedRequest, res: Response) => {
     });
 
     if (!savedJob) {
-      res.status(404).json({ message: "Saved jobId not found." });
+      res.status(404).json({ message: "Saved job ID not found." });
       return;
     }
 
@@ -80,7 +89,11 @@ export const removeSavedJob = async (req: ProtectedRequest, res: Response) => {
       where: { userId_jobId: { userId, jobId }}
     })
 
-    res.status(204).json({ message: "Job removed from saved jobs." });
+    res.status(200).json({
+      message: "Job removed from saved jobs.",
+      links: {
+        viewAllSavedJobs: "/api/saved-jobs",
+      }});
     return;
 
   } catch (err) {
