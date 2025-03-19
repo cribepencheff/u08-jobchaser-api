@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-interface ProtectedRequest extends Request {
+export interface ProtectedRequest extends Request {
   user?: JwtPayload
 }
 
@@ -18,7 +18,7 @@ export const authMiddleware = (req: ProtectedRequest, res: Response, next: NextF
   }
 
   if (!JWT_SECRET) {
-    res.status(500).json({ message: "JWT_SECRET is not defined"});
+    res.status(500).json({ message: "JWT_SECRET is not defined."});
   }
 
   // Verify token with verify()

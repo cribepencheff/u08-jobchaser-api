@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
+import { createJWT } from "../utils/utils";
 import prisma from "../config/db";
 import bcrypt from "bcrypt";
-import { createJWT } from "../utils/utils";
 
 const SALT_ROUNDS = 10;
 
@@ -12,7 +12,7 @@ export const signUp = async (req: Request, res: Response) => {
   const userExists = await prisma.user.findUnique({ where: { email }});
 
   if (userExists) {
-    res.status(409).json({ message: "User already exists"});
+    res.status(409).json({ message: "User already exists."});
     return;
   }
 
@@ -20,7 +20,7 @@ export const signUp = async (req: Request, res: Response) => {
 
   // Saved hashed PW to DB
   const user = await prisma.user.create({ data: { email, password: hashedPassword }});
-  res.status(201).json({ message: "User successfully created", user });
+  res.status(201).json({ message: "User successfully created.", user });
 };
 
 export const logIn = async (req: Request, res: Response) => {
@@ -31,7 +31,7 @@ export const logIn = async (req: Request, res: Response) => {
 
   // If user not in DB
   if(!user) {
-    res.status(404).json({ message: "User not found "});
+    res.status(404).json({ message: "User not found."});
     return;
   }
 
@@ -39,7 +39,7 @@ export const logIn = async (req: Request, res: Response) => {
   const isPasswordValid = await bcrypt.compare( password, user.password );
 
   if (!isPasswordValid) {
-    res.status(401).json({ message: "Invalid credentials" });
+    res.status(401).json({ message: "Invalid credentials." });
     return;
   }
 
@@ -53,6 +53,6 @@ export const logIn = async (req: Request, res: Response) => {
 
 export const logOut = (req: Request, res: Response) => {
   // TODO: Use HttpOnly-cookies
-  res.status(200).json({ message: "Logged out successfully" });
+  res.status(200).json({ message: "Logged out successfully." });
   return;
 };
