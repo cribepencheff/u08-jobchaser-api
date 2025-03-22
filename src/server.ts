@@ -11,8 +11,10 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 const corsOptions = {
   origin: 'http://localhost:3001', // 3001 for NextJS since our backend uses 3000
-  // TODO: Add production URL (https://my-production-url.com)
-  methods: ['GET', 'POST', 'PUT', 'DELETE']
+  // TODO: Add function for production URL (https://my-production-url.com)
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200
 };
 
 // Middleware

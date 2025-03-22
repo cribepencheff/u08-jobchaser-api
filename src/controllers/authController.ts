@@ -20,7 +20,7 @@ export const signUp = async (req: Request, res: Response) => {
     // Saved hashed PW to DB
     const user = await prisma.user.create({ data: { email, password: hashedPassword }});
 
-    res.status(201).json({ message: "User successfully created.", user: user.email });
+    res.status(201).json({ message: "User created successfully.", user: user.email });
     return;
 
   } catch (err) {
