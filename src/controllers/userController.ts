@@ -85,6 +85,13 @@ export const deleteUser = async (req: ProtectedRequest, res: Response) => {
   try {
     // Get user from JWT
     const userId = req.user?.id;
+    const user = await prisma.user.findUnique({ where: { id: userId }});
+
+    if (!user) {
+      res.status(404).json({ message: "User not found. Cannot delete non-existent user." });
+      return;
+    }
+
     await prisma.user.delete({ where: { id: userId }});
 
     res.status(200).json({ message: "User deleted successfully." });

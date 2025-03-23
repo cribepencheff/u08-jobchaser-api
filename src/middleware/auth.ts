@@ -8,29 +8,28 @@ export interface ProtectedRequest extends Request {
 const { JWT_SECRET } = process.env;
 
 export const authMiddleware = (req: ProtectedRequest, res: Response, next: NextFunction) => {
-  // Request bearer token from request-headern (Brearer: _ )
-  const bearerToken = req.headers.authorization?.split(" ")[1];
+  // Request token HttpOnly-cookie
+  const token = req.cookies.auth_token;
 
-  // Bearer token check
-  if (!bearerToken) {
-    res.status(401).json({ message: "Unauthorized request. Token does not exist." });
+  // HttpOnly-cookie token check
+  if (!token) {
+    res.status(401).json({ message: "Unauthorized request. No token found." });
     return;
   }
 
   if (!JWT_SECRET) {
-    res.status(500).json({ message: "JWT_SECRET is not defined."});
-    return;
+    throw new Error("JWT_SECRET is not defined");
   }
 
   // Verify token with verify()
   try {
-    const decoded = jwt.verify(bearerToken, JWT_SECRET as string) as JwtPayload;
+    const decoded = jwt.verify(token, JWT_SECRET as string) as JwtPayload;
     req.user = decoded;
-    console.log("Req user: ", req.user);
+    // console.log("Req user: ", req.user);
     next();
 
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res.status(401).json({ message: "Unauthorized request. Invalid token." });
     return;
   }

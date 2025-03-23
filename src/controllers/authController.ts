@@ -53,9 +53,16 @@ export const logIn = async (req: Request, res: Response) => {
     // If user authorized (authenticated/auth) then create JWT (JSON Web Token)
     const token = createJWT(user);
 
-    // Send token to client by request-headern
+    // Set the token in an HttpOnly-cookie
+    res.cookie('auth_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 1000 * 60 * 60 * 24 * 7, // Expires in 7 days
+    });
+
     // console.log(token);
-    res.status(200).json({ token });
+    res.status(200).json({ message: "Logged in successfully." });
     return;
 
   } catch (err) {
@@ -67,7 +74,12 @@ export const logIn = async (req: Request, res: Response) => {
 
 export const logOut = (req: Request, res: Response) => {
   try {
-    // TODO: Use HttpOnly-cookies
+    // Clear HttpOnly-cookies
+    res.clearCookie('auth_token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
 
     res.status(200).json({ message: "Logged out successfully." });
     return;
