@@ -13,8 +13,9 @@ const NODE_ENV = process.env.NODE_ENV;
 const app = express();
 const corsOptions = {
   // 3001 for NextJS since our backend uses 3000
-  origin: NODE_ENV === 'production' ? 'https://your-production-url.com' : 'http://localhost:3001',
-  // TODO: Add function for production URL (https://my-production-url.com)
+  origin: NODE_ENV === 'production'
+    ? 'https://u07-jobchaser-cribepencheff.vercel.app/'
+    : 'http://localhost:3001',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   optionsSuccessStatus: 200
