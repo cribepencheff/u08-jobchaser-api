@@ -25,7 +25,7 @@ Relationen mellan **user** och **saved_jobs** är **en-till-många** (one-to-man
 
 - **Express**: För routing och API-hantering.
 
-- **Prisma**: ORM för att hantera databasen (MySQL).
+- **Prisma**: ORM för att hantera databasen (Postgres).
 
 - **JWT**: För autentisering och åtkomstkontroll via token.
 
@@ -208,7 +208,7 @@ npm install
 Skapa en `.env`-fil i projektets rotmapp och lägg till följande:
 
 ```bash
-DATABASE_URL='Anslutningssträngen till din MySQL-databas enligt Proismas dokumentation'  
+DATABASE_URL='Anslutningssträngen till din Postgres-databas enligt Proismas dokumentation'  
 
 JWT_SECRET='Hemlig nyckel som används för att signera och verifiera JSON Web Tokens (JWT)'
 ```
@@ -244,3 +244,31 @@ npm run build    # Bygg TypeScript till JavaScript
 npm start        # Starta servern i produktionsläge
 ```
 
+## 📌 Deployment på Render.com
+
+Deploya applikationen till [Render.com](https://render.com):  
+
+1. Skapa ett konto på Render.com (om du inte redan har ett).  
+
+2. Koppla ditt GitHub-repository till Render.  
+
+3. Välj "Node.js" som miljö och välj den branch du vill deploya.  
+
+4. Ställ in Build Command som:  
+    ```bash
+    npm install && npx prisma generate && npx prisma migrate deploy && npm run build
+    ```  
+
+5. Ställ in Start Command som:
+    ```bash
+    npx ts-node src/server.ts
+    ```  
+
+6. Ställ in miljövariabler på Render.  
+För att applikationen ska fungera korrekt på Render behöver du lägga till miljövariablerna för `JWT_SECRET` och `DATABASE_URL`. Följ [Render.com](https://render.com)s dokumentation för att lägga till miljövariabler på din Render-app:
+    ```bash
+    DATABASE_URL='postgresql://user:password@host:port/database'
+    JWT_SECRET='din-hemliga-nyckel'
+    ```  
+
+Render.com kommer nu att bygga och starta din applikation automatiskt, och miljövariablerna kommer att vara tillgängliga för din app under körning.
