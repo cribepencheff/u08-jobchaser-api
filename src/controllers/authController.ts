@@ -63,6 +63,7 @@ export const logIn = async (req: Request, res: Response) => {
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: expirationDays * 1000 * 60 * 60 * 24, // Converts to ms
+      partitioned: true, // Required in Chrome to allow third-party cookies (new)
     });
 
     // console.log(token);
