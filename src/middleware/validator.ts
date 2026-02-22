@@ -5,19 +5,17 @@ import { Request, Response, NextFunction } from "express";
 const passwordValidation = (field: string) => [
   body(field)
     .trim()
-    .isLength({ min: 8 }).withMessage('Password must be at least 8 characters long.')
-    .matches(/[\W_]/).withMessage('Password must contain at least one special character.')
+    .isLength({ min: 8 })
+    .withMessage("password_min_length")
+    .matches(/[\W_]/)
+    .withMessage("password_special_char")
     .escape(),
 ];
 
 export const validateUser = [
-  body("email")
-    .trim()
-    .isEmail()
-    .withMessage("Invalid email format.")
-    .escape(),
+  body("email").trim().isEmail().withMessage("invalid_email_format").escape(),
 
-    ...passwordValidation("password"),
+  ...passwordValidation("password"),
 
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
@@ -25,12 +23,15 @@ export const validateUser = [
     if (!errors.isEmpty()) {
       // console.log(errors.array());
       res.status(400).json({
-        message: errors.array().map((err) => err.msg).join(", "),
+        messageKey: errors
+          .array()
+          .map((err) => err.msg)
+          .join(", "),
       });
       return;
     }
     next();
-  }
+  },
 ];
 
 export const validateUserUpdate = [
@@ -43,10 +44,13 @@ export const validateUserUpdate = [
     if (!errors.isEmpty()) {
       // console.log(errors.array());
       res.status(400).json({
-        message: errors.array().map((err) => err.msg).join(", "),
+        messageKey: errors
+          .array()
+          .map((err) => err.msg)
+          .join(", "),
       });
       return;
     }
     next();
-  }
+  },
 ];

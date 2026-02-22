@@ -12,7 +12,7 @@ export const signUp = async (req: Request, res: Response) => {
     const userExists = await prisma.user.findUnique({ where: { email } });
 
     if (userExists) {
-      res.status(409).json({ message: "User already exists." });
+      res.status(409).json({ messageKey: "user_already_exists" });
       return;
     }
 
@@ -25,11 +25,11 @@ export const signUp = async (req: Request, res: Response) => {
 
     res
       .status(201)
-      .json({ message: "User created successfully.", user: user.email });
+      .json({ messageKey: "user_created_successfully", user: user.email });
     return;
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Error creating user." });
+    res.status(500).json({ messageKey: "unknown_error" });
     return;
   }
 };
@@ -42,7 +42,7 @@ export const logIn = async (req: Request, res: Response) => {
 
     // If user not in DB
     if (!user) {
-      res.status(404).json({ message: "User not found." });
+      res.status(404).json({ messageKey: "user_not_found" });
       return;
     }
 
@@ -50,7 +50,7 @@ export const logIn = async (req: Request, res: Response) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      res.status(401).json({ message: "Invalid credentials." });
+      res.status(401).json({ messageKey: "invalid_credentials" });
       return;
     }
 
@@ -68,11 +68,11 @@ export const logIn = async (req: Request, res: Response) => {
     });
 
     // console.log(token);
-    res.status(200).json({ message: "Logged in successfully." });
+    res.status(200).json({ messageKey: "login_successful" });
     return;
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Error logging in." });
+    res.status(500).json({ messageKey: "unknown_error" });
     return;
   }
 };
@@ -86,11 +86,11 @@ export const logOut = (req: Request, res: Response) => {
       sameSite: isProd ? "none" : "lax",
     });
 
-    res.status(200).json({ message: "Logged out successfully." });
+    res.status(200).json({ messageKey: "logout_successful" });
     return;
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Error logging out." });
+    res.status(500).json({ messageKey: "unknown_error" });
     return;
   }
 };

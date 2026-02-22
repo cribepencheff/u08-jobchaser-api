@@ -2,18 +2,22 @@ import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
 export interface ProtectedRequest extends Request {
-  user?: JwtPayload
+  user?: JwtPayload;
 }
 
 const { JWT_SECRET } = process.env;
 
-export const authMiddleware = (req: ProtectedRequest, res: Response, next: NextFunction) => {
+export const authMiddleware = (
+  req: ProtectedRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   // Request token HttpOnly-cookie
   const token = req.cookies.auth_token;
 
   // HttpOnly-cookie token check
   if (!token) {
-    res.status(401).json({ message: "Unauthorized request. No token found." });
+    res.status(401).json({ messageKey: "unauthorized_no_token" });
     return;
   }
 
@@ -27,10 +31,9 @@ export const authMiddleware = (req: ProtectedRequest, res: Response, next: NextF
     req.user = decoded;
     // console.log("Req user: ", req.user);
     next();
-
   } catch (err) {
     // console.log(err);
-    res.status(401).json({ message: "Unauthorized request. Invalid token." });
+    res.status(401).json({ messageKey: "unauthorized_invalid_token" });
     return;
   }
-}
+};

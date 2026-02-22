@@ -30,7 +30,7 @@ app.use(cookieParser());
 
 // Root route
 app.get("/", (_req, res) => {
-  res.json({ message: "Backend is running!" });
+  res.json({ messageKey: "backend_running" });
 });
 
 // API-routes
@@ -47,7 +47,7 @@ app.use(
     _next: express.NextFunction,
   ) => {
     console.error(err.stack);
-    res.status(500).json({ message: "Something went wrong." });
+    res.status(500).json({ messageKey: "unknown_error" });
   },
 );
 
