@@ -4,6 +4,7 @@ import prisma from "../config/db";
 import bcrypt from "bcrypt";
 
 const SALT_ROUNDS = 10;
+const isProd = process.env.NODE_ENV === "production";
 
 export const signUp = async (req: Request, res: Response) => {
   try {
@@ -60,10 +61,10 @@ export const logIn = async (req: Request, res: Response) => {
     // Set the token in an HttpOnly-cookie
     res.cookie("auth_token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
       maxAge: expirationDays * 1000 * 60 * 60 * 24, // Converts to ms
-      partitioned: true, // Required in Chrome to allow third-party cookies (new)
+      ...(isProd && { partitioned: true }), // Required in Chrome to allow third-party cookies (new)
     });
 
     // console.log(token);
@@ -81,8 +82,8 @@ export const logOut = (req: Request, res: Response) => {
     // Clear HttpOnly-cookies
     res.clearCookie("auth_token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
     });
 
     res.status(200).json({ message: "Logged out successfully." });
