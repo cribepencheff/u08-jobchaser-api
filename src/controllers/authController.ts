@@ -8,7 +8,7 @@ const isProd = process.env.NODE_ENV === "production";
 
 export const signUp = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
+    const { firstName, email, password } = req.body;
     const userExists = await prisma.user.findUnique({ where: { email } });
 
     if (userExists) {
@@ -20,7 +20,7 @@ export const signUp = async (req: Request, res: Response) => {
 
     // Saved hashed PW to DB
     const user = await prisma.user.create({
-      data: { email, password: hashedPassword },
+      data: { firstName, email, password: hashedPassword },
     });
 
     res

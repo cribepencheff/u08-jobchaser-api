@@ -13,6 +13,34 @@ const passwordValidation = (field: string) => [
 ];
 
 export const validateUser = [
+  body("firstName")
+    .trim()
+    .isLength({ min: 2 })
+    .withMessage("first_name_min_length")
+    .escape(),
+
+  body("email").trim().isEmail().withMessage("invalid_email_format").escape(),
+
+  ...passwordValidation("password"),
+
+  (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      // console.log(errors.array());
+      res.status(400).json({
+        messageKey: errors
+          .array()
+          .map((err) => err.msg)
+          .join(", "),
+      });
+      return;
+    }
+    next();
+  },
+];
+
+export const validateLogin = [
   body("email").trim().isEmail().withMessage("invalid_email_format").escape(),
 
   ...passwordValidation("password"),
